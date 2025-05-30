@@ -1,0 +1,76 @@
+erDiagram
+    USERS {
+        int id PK
+        varchar nim UK "NIM Mahasiswa"
+        varchar name
+        enum role "mahasiswa, staff"
+        varchar kode_akses
+        datetime created_at
+        datetime updated_at
+    }
+
+    PEMINJAMAN {
+        int id PK
+        int user_id FK
+        date tanggal_peminjaman
+        enum status "pending, disetujui, dikembalikan"
+        int approved_by FK "Staff yang approve"
+        varchar verification_code
+        text notes
+        datetime created_at
+        datetime updated_at
+    }
+
+    PEMINJAMAN_DETAIL {
+        int id PK
+        int peminjaman_id FK
+        enum reference_type "barang, kelas, absen"
+        int reference_id "ID dari table terkait"
+        int jumlah "Untuk barang saja"
+        datetime waktu_mulai "Untuk kelas saja"
+        datetime waktu_selesai "Untuk kelas saja"
+        datetime created_at
+    }
+
+    BARANG {
+        int id PK
+        varchar nama
+        varchar satuan "unit, rim, dll"
+        int stok
+        enum status "tersedia, dipinjam, maintenance"
+        varchar lokasi
+        datetime created_at
+        datetime updated_at
+    }
+
+    KELAS {
+        int id PK
+        varchar nama_kelas "204, 205, dll"
+        varchar gedung
+        int lantai
+        int kapasitas
+        text fasilitas
+        datetime created_at
+        datetime updated_at
+    }
+
+    ABSEN {
+        int id PK
+        varchar nama_matakuliah
+        varchar kelas "A, B, C"
+        int semester
+        varchar dosen
+        varchar jurusan
+        datetime created_at
+        datetime updated_at
+    }
+
+    %% Primary Relationships
+    USERS ||--o{ PEMINJAMAN : "membuat/mengajukan"
+    USERS ||--o{ PEMINJAMAN : "menyetujui (staff)"
+    PEMINJAMAN ||--o{ PEMINJAMAN_DETAIL : "berisi"
+
+    %% Conditional Relationships based on reference_type
+    PEMINJAMAN_DETAIL }o--|| BARANG : "reference_type=barang"
+    PEMINJAMAN_DETAIL }o--|| KELAS : "reference_type=kelas"
+    PEMINJAMAN_DETAIL }o--|| ABSEN : "reference_type=absen"
