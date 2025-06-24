@@ -101,7 +101,7 @@ const Register = () => {
                     <hr className="w-full border-t-[1.5px] border-red-700 my-4" />
                     <p className="text-lg lg:text-xl font-light font-['Poppins'] text-gray-800 text-left">
                     Official Equipment Lending Platform <br />
-                    of the <span className="text-red-600">Department of Mathematics</span>
+                    of the <span className="text-red-600 cursor-pointer" onClick={handleBackToHome}>Department of Mathematics</span>
                     </p>
                 </div>
             </div>
@@ -111,7 +111,7 @@ const Register = () => {
                 <div className="bg-rose-50 rounded-2xl p-6 lg:p-10 border border-rose-200 shadow-md">
 
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-4 mt-0">
+                    {/* <div className="flex items-center justify-between mb-4 mt-0">
                         <button
                             onClick={handleBackToHome}
                             className="text-white text-sm font-light font-['Poppins'] bg-gray-600 px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
@@ -119,7 +119,7 @@ const Register = () => {
                             ← Kembali
                         </button>
                         
-                    </div>
+                    </div> */}
 
                     <form onSubmit={handleSubmit} className="space-y-5">
 
@@ -169,39 +169,6 @@ const Register = () => {
                         className="w-full h-12 bg-rose-200 rounded-xl px-4 text-black placeholder-gray-600 outline-none focus:bg-rose-300/50 font-['Poppins']"
                         placeholder="Masukkan kode akses (min: 6 karakter)"
                         />
-                    </div>
-
-                    {/* Program Studi */}
-                    <div>
-                        <label className="block text-black text-base font-medium font-['Poppins'] mb-1 text-left">
-                        Program Studi
-                        </label>
-                        <select
-                        name="prodi"
-                        className="w-full h-12 bg-rose-200 rounded-xl px-4 text-black outline-none focus:bg-rose-300/50 font-['Poppins']"
-                        >
-                        <option value="">Pilih Program Studi</option>
-                        <option value="Sistem Informasi">Sistem Informasi</option>
-                        <option value="Matematika">Matematika</option>
-                        </select>
-                    </div>
-
-                    {/* Angkatan */}
-                    <div>
-                        <label className="block text-black text-base font-medium font-['Poppins'] mb-1 text-left">
-                        Angkatan
-                        </label>
-                        <select
-                        name="angkatan"
-                        className="w-full h-12 bg-rose-200 rounded-xl px-4 text-black outline-none focus:bg-rose-300/50 font-['Poppins']"
-                        >
-                        <option value="">Pilih Angkatan</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        </select>
                     </div>
 
                     {/* Success/Error */}

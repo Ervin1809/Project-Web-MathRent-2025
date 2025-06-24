@@ -94,7 +94,7 @@ const Login = () => {
                         <hr className="w-full border-t-[1.5px] border-red-700 my-4" />
                         <p className="text-lg lg:text-xl font-light font-['Poppins'] text-gray-800">
                         Official Equipment Lending Platform <br />
-                        of the <span className="text-red-600">Department of Mathematics</span>
+                        of the <span className="text-red-600 cursor-pointer" onClick={handleBackToHome}>Department of Mathematics</span>
                         </p>
                     </div>
                 </div>
@@ -128,6 +128,7 @@ const Login = () => {
                         />
                     </div>
 
+{/*
                     <div className="text-right">
                         <button
                         type="button"
@@ -136,7 +137,7 @@ const Login = () => {
                         Lupa Kata Sandi?
                         </button>
                     </div>
-
+*/}
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg">
                         {error}

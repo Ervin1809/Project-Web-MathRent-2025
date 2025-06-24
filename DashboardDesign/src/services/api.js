@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Base URL FastAPI backend
+// Base URL FastAPI backend - KEEP /api (sudah benar karena vite proxy)
 const API_BASE_URL = '/api';
 
 // Create axios instance
@@ -11,9 +11,10 @@ const api = axios.create({
     },
 });
 
-// Add token to requests automatically
+// Add token to requests automatically - SESUAIKAN dengan yang dipakai di login
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
+    // Cek mana yang dipakai di login kamu: 'token' atau 'access_token'
+    const token = localStorage.getItem('access_token') || localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -24,8 +25,10 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
+        console.error('API Error:', error.response?.data || error.message);
         if (error.response?.status === 401) {
             // Token expired or invalid
+            localStorage.removeItem('access_token');
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/login';
@@ -56,13 +59,29 @@ export const peminjamanAPI = {
     approve: (id, data) => api.put(`/peminjaman/${id}/approve`, data),
     delete: (id) => api.delete(`/peminjaman/${id}`),
 
+    // NEW: Get kelas schedule by date
+    getKelasSchedule: (kelasId, tanggal) => {
+        const params = { 
+            kelas_id: kelasId,
+            tanggal: tanggal 
+        };
+        return api.get('/peminjaman/kelas/schedule', { params });
+    },
+
     // Available items
     getAvailableItems: () => api.get('/peminjaman/available-items'),
 };
 
+// FIXED - Add proper parameter handling
 export const barangAPI = {
-    getAll: (params) => api.get('/barang/', { params }),
-    getTersedia: () => api.get('/barang/tersedia'),
+    getAll: (params = {}) => api.get('/barang/', { params }),
+    getTersedia: (page = 1, per_page = 20) => {
+        console.log('📞 barangAPI.getTersedia called with:', { page, per_page });
+        return api.get('/barang/tersedia', { 
+            params: { page, per_page } 
+        });
+    },
+    getDetail: (id) => api.get(`/barang/${id}`),
     create: (data) => api.post('/barang/', data),
     update: (id, data) => api.put(`/barang/${id}`, data),
     updateStatus: (id, data) => api.patch(`/barang/${id}/status`, data),
@@ -70,8 +89,13 @@ export const barangAPI = {
 };
 
 export const kelasAPI = {
-    getAll: (params) => api.get('/kelas/', { params }),
-    getTersedia: () => api.get('/kelas/tersedia'),
+    getAll: (params = {}) => api.get('/kelas/', { params }),
+    getTersedia: (page = 1, per_page = 20) => {
+        console.log('📞 kelasAPI.getTersedia called with:', { page, per_page });
+        return api.get('/kelas/tersedia', { 
+            params: { page, per_page } 
+        });
+    },
     getDetail: (id) => api.get(`/kelas/${id}`),
     create: (data) => api.post('/kelas/', data),
     update: (id, data) => api.put(`/kelas/${id}`, data),
@@ -80,10 +104,16 @@ export const kelasAPI = {
 };
 
 export const absenAPI = {
-    getAll: (params) => api.get('/absen/', { params }),
+    getAll: (page = 1, per_page = 100, semester = null, jurusan = null) => {
+        console.log('📞 absenAPI.getAll called with:', { page, per_page, semester, jurusan });
+        const params = { page, per_page };
+        if (semester) params.semester = semester;
+        if (jurusan) params.jurusan = jurusan;
+        return api.get('/absen/', { params });
+    },
     getDetail: (id) => api.get(`/absen/${id}`),
-    searchByMatakuliah: (params) => api.get('/absen/search/matakuliah', { params }),
-    getByDosen: (name, params) => api.get(`/absen/dosen/${name}`, { params }),
+    searchByMatakuliah: (params = {}) => api.get('/absen/search/matakuliah', { params }),
+    getByDosen: (name, params = {}) => api.get(`/absen/dosen/${name}`, { params }),
     create: (data) => api.post('/absen/', data),
     update: (id, data) => api.put(`/absen/${id}`, data),
     delete: (id) => api.delete(`/absen/${id}`),
