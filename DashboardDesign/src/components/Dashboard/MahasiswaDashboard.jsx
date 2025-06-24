@@ -30,7 +30,7 @@ const MahasiswaDashboard = () => {
 
             // Fetch data dari semua API endpoints
             const [barangResponse, kelasResponse, absenResponse] = await Promise.all([
-                barangAPI.getTersedia(1, 50), // Get available barang
+                barangAPI.getAll(), // Get available barang
                 kelasAPI.getAll(),  // Get available kelas
                 absenAPI.getAll(1, 100)      // Get all absen
             ]);
@@ -55,20 +55,21 @@ const MahasiswaDashboard = () => {
                 description: `${barang.nama} - Lokasi: ${barang.lokasi}`
             }));
 
-            // Transform kelas data  
-            const kelasItems = kelasResponse.data.map(kelas => ({
+            // FIXED: Transform kelas data - REMOVE status reference
+            const kelasItems = (kelasResponse.data.data || kelasResponse.data).map(kelas => ({
                 id: kelas.id,
                 type: 'ruangan',
                 name: `${kelas.nama_kelas} - ${kelas.gedung}`,
-                currentStock: kelas.status === 'tersedia' ? 0 : 1,
+                currentStock: 0, // Always 0 for time-based booking
                 maxStock: 1,
                 image: null,
                 capacity: kelas.kapasitas,
                 gedung: kelas.gedung,
                 lantai: kelas.lantai,
                 fasilitas: kelas.fasilitas,
-                status: kelas.status,
-                location: `${kelas.gedung} Lantai ${kelas.lantai}`
+                // REMOVED: status: kelas.status (field tidak ada lagi)
+                location: `${kelas.gedung} Lantai ${kelas.lantai}`,
+                isTimeBasedBooking: true // Mark as time-based booking
             }));
 
             // Transform absen data - Group by semester & jurusan
@@ -115,7 +116,7 @@ const MahasiswaDashboard = () => {
                 name: absen.nama_matakuliah,
                 kelas: absen.kelas,
                 dosen: absen.dosen,
-                status: 'tersedia' // TODO: Check if already borrowed
+                status: absen.status
             });
 
             acc[key].maxStock++;

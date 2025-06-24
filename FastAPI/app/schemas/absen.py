@@ -1,18 +1,20 @@
 from pydantic import BaseModel, validator
+from app.models import StatusBarangEnum  # Import existing enum
 
 class AbsenCreate(BaseModel):
     nama_matakuliah: str
-    kelas: str  # A, B, C, dll
+    kelas: str
     semester: int
     dosen: str
     jurusan: str
 
 class AbsenUpdate(BaseModel):
-    nama_matakuliah: str = None  # Ganti Optional[str] dengan ini
-    satuan: str = None
+    nama_matakuliah: str = None
+    kelas: str = None
     semester: int = None
     dosen: str = None
     jurusan: str = None
+    status: StatusBarangEnum = None  # ADD: Allow status update
 
 class AbsenResponse(BaseModel):
     id: int
@@ -21,6 +23,7 @@ class AbsenResponse(BaseModel):
     semester: int
     dosen: str
     jurusan: str
+    status: StatusBarangEnum  # ADD: Include status field ✅
     created_at: str
     updated_at: str
 
@@ -31,4 +34,11 @@ class AbsenResponse(BaseModel):
     def serialize_datetime(cls, v):
         if hasattr(v, "isoformat"):
             return v.isoformat()
+        return str(v)
+
+    @validator("status", pre=True)
+    def serialize_status(cls, v):
+        print("DEBUG STATUS:", v)
+        if hasattr(v, "value"):
+            return v.value
         return str(v)
