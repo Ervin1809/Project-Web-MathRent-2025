@@ -47,7 +47,7 @@ export const authAPI = {
 
 export const peminjamanAPI = {
     // Mahasiswa endpoints
-    create: (data) => api.post('/peminjaman/', data),
+    createPeminjaman: (data) => api.post('/peminjaman/', data),
     getMy: (params) => api.get('/peminjaman/my', { params }),
     updateMy: (id, data) => api.put(`/peminjaman/my/${id}`, data),
     deleteMy: (id) => api.delete(`/peminjaman/my/${id}`),
@@ -90,16 +90,9 @@ export const barangAPI = {
 
 export const kelasAPI = {
     getAll: (params = {}) => api.get('/kelas/', { params }),
-    getTersedia: (page = 1, per_page = 20) => {
-        console.log('📞 kelasAPI.getTersedia called with:', { page, per_page });
-        return api.get('/kelas/tersedia', { 
-            params: { page, per_page } 
-        });
-    },
     getDetail: (id) => api.get(`/kelas/${id}`),
     create: (data) => api.post('/kelas/', data),
     update: (id, data) => api.put(`/kelas/${id}`, data),
-    updateStatus: (id, data) => api.patch(`/kelas/${id}/status`, data),
     delete: (id) => api.delete(`/kelas/${id}`),
 };
 

@@ -15,10 +15,10 @@ class KelasUpdate(BaseModel):
     lantai: Optional[int] = None
     kapasitas: Optional[int] = None
     fasilitas: Optional[str] = None
-    status: Optional[StatusBarangEnum] = None  # Gunakan StatusBarangEnum
+    # status: Optional[StatusBarangEnum] = None  # Gunakan StatusBarangEnum
 
-class StatusKelasUpdate(BaseModel):
-    status: StatusBarangEnum  # Gunakan StatusBarangEnum
+# class StatusKelasUpdate(BaseModel):
+#     status: StatusBarangEnum  # Gunakan StatusBarangEnum
 
 class KelasResponse(BaseModel):
     id: int
@@ -27,7 +27,6 @@ class KelasResponse(BaseModel):
     lantai: int
     kapasitas: int
     fasilitas: Optional[str]
-    status: StatusBarangEnum  # Gunakan StatusBarangEnum
     created_at: str
     updated_at: str
 

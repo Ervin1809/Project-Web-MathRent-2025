@@ -6,7 +6,7 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    
+
     // Input states
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
@@ -31,18 +31,18 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
         try {
             setLoading(true);
             setError('');
-            
+
             console.log('🔄 Fetching kelas schedule for:', { kelasId, selectedDate });
-            
+
             // Call real API
             const response = await peminjamanAPI.getKelasSchedule(kelasId, selectedDate);
-            
+
             console.log('✅ Kelas schedule response:', response.data);
-            
+
             // Transform data
             const jadwalData = response.data.jadwal || [];
             setSchedule(jadwalData);
-            
+
         } catch (error) {
             console.error('❌ Error fetching kelas schedule:', error);
             setError('Gagal memuat jadwal. Menggunakan data kosong.');
@@ -66,7 +66,7 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
         const conflicts = schedule.filter(booking => {
             const bookingStart = booking.waktu_mulai;
             const bookingEnd = booking.waktu_selesai;
-            
+
             // Check if there's any overlap
             return (
                 (startTime >= bookingStart && startTime < bookingEnd) ||
@@ -77,7 +77,7 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
 
         if (conflicts.length > 0) {
             setHasConflict(true);
-            const conflictDetails = conflicts.map(c => 
+            const conflictDetails = conflicts.map(c =>
                 `${c.waktu_mulai}-${c.waktu_selesai} (${c.user_name})`
             ).join(', ');
             setConflictMessage(`Bentrok dengan jadwal: ${conflictDetails}`);
@@ -87,6 +87,7 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
         }
     };
 
+    // Update handleSubmitBooking function
     const handleSubmitBooking = () => {
         if (!startTime || !endTime) {
             alert('Mohon isi waktu mulai dan waktu selesai');
@@ -98,7 +99,7 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
             return;
         }
 
-        // Submit booking
+        // Submit booking via parent
         onRequestKelas({
             kelasId,
             tanggal: selectedDate,
@@ -106,14 +107,9 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
             waktu_selesai: endTime
         });
 
-        // Clear form dan refresh schedule
+        // Clear form
         setStartTime('');
         setEndTime('');
-        
-        // Optional: Refresh schedule after booking
-        setTimeout(() => {
-            fetchKelasSchedule();
-        }, 1000);
     };
 
     const formatTimeDisplay = (time) => {
@@ -220,11 +216,10 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
                     <button
                         onClick={handleSubmitBooking}
                         disabled={!startTime || !endTime || hasConflict || loading}
-                        className={`w-full py-3 px-4 rounded-lg font-semibold font-poppins transition-colors ${
-                            (!startTime || !endTime || hasConflict || loading)
+                        className={`w-full py-3 px-4 rounded-lg font-semibold font-poppins transition-colors ${(!startTime || !endTime || hasConflict || loading)
                                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 : 'bg-red-700 text-white hover:bg-red-800'
-                        }`}
+                            }`}
                     >
                         {loading ? 'Memuat...' : 'Ajukan Peminjaman Kelas'}
                     </button>

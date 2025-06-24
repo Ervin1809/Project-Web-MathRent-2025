@@ -58,13 +58,6 @@ def validate_peminjaman_items(details: List[PeminjamanDetailCreate], db: Session
             if detail.waktu_mulai and detail.waktu_selesai and detail.waktu_mulai >= detail.waktu_selesai:
                 errors.append(f"Item {i+1}: Waktu mulai harus lebih awal dari waktu selesai")
                 
-            # Cek ketersediaan kelas
-            kelas = db.query(Kelas).filter(Kelas.id == detail.reference_id).first()
-            if not kelas:
-                errors.append(f"Item {i+1}: Kelas dengan ID {detail.reference_id} tidak ditemukan")
-            elif kelas.status != StatusBarangEnum.tersedia:
-                errors.append(f"Item {i+1}: Kelas '{kelas.nama_kelas}' tidak tersedia")
-                
         elif detail.reference_type == ReferenceTypeEnum.absen:
             if detail.jumlah or detail.waktu_mulai or detail.waktu_selesai:
                 errors.append(f"Item {i+1}: Absen tidak perlu jumlah atau waktu")
@@ -511,10 +504,11 @@ def approve_peminjaman(
                     barang.stok = max(0, barang.stok - detail.jumlah)
                     if barang.stok == 0:
                         barang.status = StatusBarangEnum.dipinjam
-            elif detail.reference_type == ReferenceTypeEnum.kelas:
-                kelas = db.query(Kelas).filter(Kelas.id == detail.reference_id).first()
-                if kelas:
-                    kelas.status = StatusBarangEnum.dipinjam
+            # Kelas tidak perlu update status (time-based)
+            elif detail.reference_type == ReferenceTypeEnum.absen:
+                absen = db.query(Absen).filter(Absen.id == detail.reference_id).first()
+                if absen:
+                    absen.status = StatusBarangEnum.dipinjam
     
     # Kembalikan barang/kelas jika dikembalikan
     elif approval_data.status == StatusPeminjamanEnum.dikembalikan:
@@ -524,10 +518,12 @@ def approve_peminjaman(
                 if barang and detail.jumlah:
                     barang.stok += detail.jumlah
                     barang.status = StatusBarangEnum.tersedia
-            elif detail.reference_type == ReferenceTypeEnum.kelas:
-                kelas = db.query(Kelas).filter(Kelas.id == detail.reference_id).first()
-                if kelas:
-                    kelas.status = StatusBarangEnum.tersedia
+            # Kelas tidak perlu update status (time-based)
+            elif detail.reference_type == ReferenceTypeEnum.absen:
+                # ADD: Update absen status back to tersedia
+                absen = db.query(Absen).filter(Absen.id == detail.reference_id).first()
+                if absen:
+                    absen.status = StatusBarangEnum.tersedia
     
     db.commit()
     db.refresh(peminjaman)

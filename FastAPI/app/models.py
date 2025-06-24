@@ -62,7 +62,7 @@ class Kelas(Base):
     lantai = Column(Integer)
     kapasitas = Column(Integer)
     fasilitas = Column(Text)
-    status = Column(Enum(StatusBarangEnum), default=StatusBarangEnum.tersedia)  # Tambahkan ini
+    
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -75,6 +75,7 @@ class Absen(Base):
     semester = Column(Integer)
     dosen = Column(String)
     jurusan = Column(String)
+    status = Column(Enum(StatusBarangEnum), nullable=False, default=StatusBarangEnum.tersedia)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
