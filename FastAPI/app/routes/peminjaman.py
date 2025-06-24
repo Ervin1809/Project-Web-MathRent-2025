@@ -230,6 +230,52 @@ def delete_my_peminjaman(
 
 # === ENDPOINTS UNTUK MELIHAT ITEM YANG TERSEDIA ===
 
+# Tambahkan di bagian akhir file, sebelum endpoint terakhir
+
+@router.get("/kelas/schedule")
+def get_kelas_schedule(
+    kelas_id: int = Query(..., description="ID kelas yang ingin dicek"),
+    tanggal: date = Query(..., description="Tanggal yang ingin dicek (YYYY-MM-DD)"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get jadwal booking kelas untuk tanggal tertentu"""
+    
+    # Query peminjaman yang aktif (disetujui) untuk kelas dan tanggal tertentu
+    peminjaman_list = db.query(Peminjaman).filter(
+        Peminjaman.tanggal_peminjaman == tanggal,
+        Peminjaman.status == StatusPeminjamanEnum.disetujui
+    ).all()
+    
+    # Filter yang punya detail kelas sesuai kelas_id
+    jadwal_booking = []
+    
+    for peminjaman in peminjaman_list:
+        for detail in peminjaman.details:
+            if (detail.reference_type == ReferenceTypeEnum.kelas and 
+                detail.reference_id == kelas_id and
+                detail.waktu_mulai and detail.waktu_selesai):
+                
+                jadwal_booking.append({
+                    "peminjaman_id": peminjaman.id,
+                    "user_name": peminjaman.user.name if peminjaman.user else "Unknown",
+                    "user_nim": peminjaman.user.nim if peminjaman.user else "Unknown",
+                    "waktu_mulai": detail.waktu_mulai.strftime("%H:%M"),
+                    "waktu_selesai": detail.waktu_selesai.strftime("%H:%M"),
+                    "status": peminjaman.status.value,
+                    "tanggal_peminjaman": peminjaman.tanggal_peminjaman.isoformat()
+                })
+    
+    # Sort by waktu_mulai
+    jadwal_booking.sort(key=lambda x: x["waktu_mulai"])
+    
+    return {
+        "kelas_id": kelas_id,
+        "tanggal": tanggal.isoformat(),
+        "total_booking": len(jadwal_booking),
+        "jadwal": jadwal_booking
+    }
+
 @router.get("/available-items", response_model=dict)
 def get_available_items(
     db: Session = Depends(get_db),

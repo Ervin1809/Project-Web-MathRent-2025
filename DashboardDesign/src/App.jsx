@@ -2,11 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LandingPage from './components/LandingPage';
-import About from './components/About';
-import Contact from './components/Contact';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-import MahasiswaDashboard from './components/Dashboard/MahasiswaDashboard'; // Add this import
+import MahasiswaDashboard from './components/Dashboard/MahasiswaDashboard';
+import ProductDetail from './components/Dashboard/ProductDetail'; // Add this import
 import './App.css';
 
 // Protected Route Component
@@ -36,12 +35,6 @@ const AppContent = () => {
     <Routes>
       {/* Landing Page */}
       <Route path="/" element={<LandingPage />} />
-
-      {/* About Page */}
-      <Route path="/about" element={<About/>} />
-
-      {/* Contact Page */}
-      <Route path="/contact" element={<Contact />} />
       
       {/* Auth Routes */}
       <Route path="/login" element={
@@ -65,7 +58,14 @@ const AppContent = () => {
       
       <Route path="/mahasiswa/dashboard" element={
         <ProtectedRoute requiredRole="mahasiswa">
-          <MahasiswaDashboard /> {/* Use the actual component */}
+          <MahasiswaDashboard />
+        </ProtectedRoute>
+      } />
+
+      {/* Product Detail Routes - Add these */}
+      <Route path="/mahasiswa/detail/:type/:id" element={
+        <ProtectedRoute requiredRole="mahasiswa">
+          <ProductDetail />
         </ProtectedRoute>
       } />
       
