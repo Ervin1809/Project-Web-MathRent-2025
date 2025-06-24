@@ -82,149 +82,169 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white overflow-hidden">
-            <div className="">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 lg:px-32 py-12">
+        <div className="flex flex-col lg:flex-row items-start gap-x-24 w-full max-w-7xl">
 
-                {/* Left Side - Branding */}
-                <div className="absolute left-4 lg:left-[153px] top-8 lg:top-[146px] z-10">
-                    {/* Logo/Image Placeholder */}
-                    <img
-                        className="w-40 h-48 lg:w-60 lg:h-72 object-cover rounded-lg shadow-lg"
-                        src="https://placehold.co/236x283"
-                        alt="MathRent Logo"
-                    />
+            {/* Left Side - Branding */}
+            <div className="flex flex-col items-center lg:items-start mt-18 w-full max-w-sm px-4 lg:px-0">
+                <img
+                    src="src/assets/unhas-logo.png"
+                    alt="UNHAS Logo"
+                    className="w-48 h-48 lg:w-64 lg:h-64 object-contain mb-6"
+                />
 
-                    {/* Brand Title */}
-                    <div className="mt-8 lg:mt-[137px]">
-                        <h1 className="text-4xl lg:text-8xl font-normal font-italiana text-red-800 leading-tight">
-                            MathRent
-                        </h1>
+                <h1 className="text-5xl lg:text-7xl font-serif italic text-red-800 mb-2 text-center lg:text-left">
+                    MathRent
+                </h1>
 
-                        {/* Underline */}
-                        <div className="w-full max-w-96 h-0 mt-4 border-t-[1.23px] border-red-700"></div>
-
-                        {/* Subtitle */}
-                        <div className="mt-6 max-w-[486px]">
-                            <span className="text-black text-lg lg:text-2xl font-normal font-josefin">
-                                Official Equipment Lending Platform <br />of the{' '}
-                            </span>
-                            <span className="text-red-600 text-lg lg:text-2xl font-normal font-josefin">
-                                Department of Mathematics
-                            </span>
-                        </div>
-                    </div>
+                <div className="w-full">
+                    <hr className="w-full border-t-[1.5px] border-red-700 my-4" />
+                    <p className="text-lg lg:text-xl font-light font-['Poppins'] text-gray-800 text-left">
+                    Official Equipment Lending Platform <br />
+                    of the <span className="text-red-600">Department of Mathematics</span>
+                    </p>
                 </div>
+            </div>
 
-                {/* Right Side - Register Form */}
-                <div className="ml-auto w-full max-w-md lg:max-w-none lg:w-[597px] lg:absolute lg:right-[104px] lg:top-[187px]">
-                    <div className="bg-rose-200/20 rounded-[20px] p-8 lg:p-12 border-4 border-rose-200/30 min-h-96">
+            {/* Right Side - Register Form */}
+            <div className="w-full max-w-xl">
+                <div className="bg-rose-50 rounded-2xl p-6 lg:p-10 border border-rose-200 shadow-md">
 
-                        {/* Header with Back Button */}
-                        <div className="flex items-center justify-between mb-8">
-                            <button
-                                onClick={handleBackToHome}
-                                className="text-neutral-50 text-base font-bold font-inter bg-gray-600 px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
-                            >
-                                ← Kembali
-                            </button>
-                            <div className="text-neutral-50 text-base font-bold font-inter bg-gray-600 px-4 py-2 rounded-lg">
-                                Daftar
-                            </div>
-                        </div>
-
-                        <form onSubmit={handleSubmit} className="space-y-6">
-
-                            {/* NIM Field */}
-                            <div>
-                                <label className="block text-black text-xl lg:text-2xl font-normal font-josefin mb-4">
-                                    NIM
-                                </label>
-                                <input
-                                    type="text"
-                                    name="nim"
-                                    value={formData.nim}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full h-14 bg-rose-200 rounded-2xl px-4 text-black placeholder-gray-600 border-none outline-none focus:bg-rose-300/50 transition-colors font-poppins"
-                                    placeholder="Masukkan NIM (contoh: H071231050)"
-                                />
-                            </div>
-
-                            {/* Nama Field */}
-                            <div>
-                                <label className="block text-black text-xl lg:text-2xl font-normal font-josefin mb-4">
-                                    Nama Lengkap
-                                </label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full h-14 bg-rose-200 rounded-2xl px-4 text-black placeholder-gray-600 border-none outline-none focus:bg-rose-300/50 transition-colors font-poppins"
-                                    placeholder="Masukkan nama lengkap (contoh: M.ERVIN)"
-                                />
-                            </div>
-
-                            {/* Kode Akses Field */}
-                            <div>
-                                <label className="block text-black text-xl lg:text-2xl font-normal font-josefin mb-4">
-                                    Kode Akses
-                                </label>
-                                <input
-                                    type="password"
-                                    name="kode_akses"
-                                    value={formData.kode_akses}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full h-14 bg-rose-200 rounded-2xl px-4 text-black placeholder-gray-600 border-none outline-none focus:bg-rose-300/50 transition-colors font-poppins"
-                                    placeholder="Masukkan kode akses (minimal 6 karakter)"
-                                />
-                            </div>
-
-                            {/* Success Message */}
-                            {success && (
-                                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg font-poppins">
-                                    {success}
-                                </div>
-                            )}
-
-                            {/* Error Message */}
-                            {error && (
-                                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg font-poppins">
-                                    {error}
-                                </div>
-                            )}
-
-                            {/* Register Button */}
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full h-11 bg-red-700 rounded-2xl hover:bg-red-800 focus:ring-4 focus:ring-red-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                            >
-                                <span className="text-neutral-50 text-xl font-bold font-inter">
-                                    {loading ? 'Mendaftar...' : 'Daftar'}
-                                </span>
-                            </button>
-
-                            {/* Login Link */}
-                            <div className="text-center mt-6">
-                                <span className="text-black text-lg font-normal font-poppins">
-                                    Sudah punya akun?{' '}
-                                </span>
-                                <button
-                                    type="button"
-                                    onClick={handleLoginClick}
-                                    className="text-black text-lg font-normal font-poppins underline hover:text-red-700 transition-colors"
-                                >
-                                    Masuk
-                                </button>
-                            </div>
-                        </form>
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-4 mt-0">
+                        <button
+                            onClick={handleBackToHome}
+                            className="text-white text-sm font-light font-['Poppins'] bg-gray-600 px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                        >
+                            ← Kembali
+                        </button>
+                        
                     </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-5">
+
+                    {/* Nama Lengkap */}
+                    <div>
+                        <label className="block text-black text-base font-medium font-['Poppins'] mb-1 text-left">
+                        Nama Lengkap
+                        </label>
+                        <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="w-full h-12 bg-rose-200 rounded-xl px-4 text-black placeholder-gray-600 outline-none focus:bg-rose-300/50 font-['Poppins']"
+                        placeholder="Masukkan nama lengkap"
+                        />
+                    </div>
+
+                    {/* NIM */}
+                    <div>
+                        <label className="block text-black text-base font-medium font-['Poppins'] mb-1 text-left">
+                        NIM
+                        </label>
+                        <input
+                        type="text"
+                        name="nim"
+                        value={formData.nim}
+                        onChange={handleChange}
+                        required
+                        className="w-full h-12 bg-rose-200 rounded-xl px-4 text-black placeholder-gray-600 outline-none focus:bg-rose-300/50 font-['Poppins']"
+                        placeholder="Masukkan NIM"
+                        />
+                    </div>
+
+                    {/* Kode Akses */}
+                    <div>
+                        <label className="block text-black text-base font-medium font-['Poppins'] mb-1 text-left">
+                        Kode Akses
+                        </label>
+                        <input
+                        type="password"
+                        name="kode_akses"
+                        value={formData.kode_akses}
+                        onChange={handleChange}
+                        required
+                        className="w-full h-12 bg-rose-200 rounded-xl px-4 text-black placeholder-gray-600 outline-none focus:bg-rose-300/50 font-['Poppins']"
+                        placeholder="Masukkan kode akses (min: 6 karakter)"
+                        />
+                    </div>
+
+                    {/* Program Studi */}
+                    <div>
+                        <label className="block text-black text-base font-medium font-['Poppins'] mb-1 text-left">
+                        Program Studi
+                        </label>
+                        <select
+                        name="prodi"
+                        className="w-full h-12 bg-rose-200 rounded-xl px-4 text-black outline-none focus:bg-rose-300/50 font-['Poppins']"
+                        >
+                        <option value="">Pilih Program Studi</option>
+                        <option value="Sistem Informasi">Sistem Informasi</option>
+                        <option value="Matematika">Matematika</option>
+                        </select>
+                    </div>
+
+                    {/* Angkatan */}
+                    <div>
+                        <label className="block text-black text-base font-medium font-['Poppins'] mb-1 text-left">
+                        Angkatan
+                        </label>
+                        <select
+                        name="angkatan"
+                        className="w-full h-12 bg-rose-200 rounded-xl px-4 text-black outline-none focus:bg-rose-300/50 font-['Poppins']"
+                        >
+                        <option value="">Pilih Angkatan</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        </select>
+                    </div>
+
+                    {/* Success/Error */}
+                    {success && (
+                        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg font-['Poppins']">
+                        {success}
+                        </div>
+                    )}
+                    {error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg font-['Poppins']">
+                        {error}
+                        </div>
+                    )}
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full h-11 bg-red-700 rounded-xl hover:bg-red-800 focus:ring-4 focus:ring-red-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    >
+                        <span className="text-white text-lg font-bold font-['Poppins']">
+                        {loading ? 'Mendaftar...' : 'Daftar'}
+                        </span>
+                    </button>
+
+                    {/* Login Link */}
+                    <div className="text-center mt-4">
+                        <span className="text-black text-sm font-normal font-['Poppins']">
+                        Sudah punya akun?{' '}
+                        </span>
+                        <button
+                        type="button"
+                        onClick={handleLoginClick}
+                        className="text-black text-sm font-normal font-['Poppins'] underline hover:text-red-700 transition-colors"
+                        >
+                        Masuk
+                        </button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     );
 };
 
