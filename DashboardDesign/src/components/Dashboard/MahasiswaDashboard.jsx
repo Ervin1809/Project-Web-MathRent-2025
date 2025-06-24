@@ -167,7 +167,7 @@ const MahasiswaDashboard = () => {
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mx-auto mb-4"></div>
-                    <p className="text-gray-600 font-poppins">Memuat data...</p>
+                    <p className="text-gray-600 font-['Poppins']">Memuat data...</p>
                 </div>
             </div>
         );
@@ -177,7 +177,7 @@ const MahasiswaDashboard = () => {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="text-center">
-                    <p className="text-red-600 font-poppins mb-4">{error}</p>
+                    <p className="text-red-600 font-['Poppins'] mb-4">{error}</p>
                     <button 
                         onClick={fetchAllItems}
                         className="bg-red-700 text-white px-6 py-2 rounded-lg hover:bg-red-800 transition-colors"
@@ -196,7 +196,7 @@ const MahasiswaDashboard = () => {
             <header className="w-full py-6 px-4 lg:px-8">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
                     {/* Logo */}
-                    <h1 className="text-red-700 text-2xl font-bold font-poppins">
+                    <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">
                         MathRent
                     </h1>
 
@@ -204,25 +204,25 @@ const MahasiswaDashboard = () => {
                     <nav className="flex items-center gap-4 lg:gap-8">
                         <button 
                             onClick={() => handleNavClick('home')}
-                            className="text-black text-lg lg:text-xl font-normal font-poppins underline hover:text-red-700 transition-colors"
+                            className="text-black text-lg lg:text-xl font-normal font-['Poppins'] underline hover:text-red-700 transition-colors"
                         >
                             Home
                         </button>
                         <button 
                             onClick={() => handleNavClick('about')}
-                            className="text-black text-lg lg:text-xl font-normal font-poppins hover:text-red-700 transition-colors"
+                            className="text-black text-lg lg:text-xl font-normal font-['Poppins'] hover:text-red-700 transition-colors"
                         >
                             About
                         </button>
                         <button 
                             onClick={() => handleNavClick('contact')}
-                            className="text-black text-lg lg:text-xl font-normal font-poppins hover:text-red-700 transition-colors"
+                            className="text-black text-lg lg:text-xl font-normal font-['Poppins'] hover:text-red-700 transition-colors"
                         >
                             Contact
                         </button>
                         <button 
                             onClick={handleLogout}
-                            className="text-red-600 text-lg lg:text-xl font-normal font-poppins hover:text-red-700 transition-colors"
+                            className="text-red-600 text-lg lg:text-xl font-normal font-['Poppins'] hover:text-red-700 transition-colors"
                         >
                             Logout
                         </button>
@@ -235,7 +235,7 @@ const MahasiswaDashboard = () => {
                 <div className="max-w-7xl mx-auto">
                     
                     {/* Section Title */}
-                    <h2 className="text-black text-2xl lg:text-3xl font-extrabold font-poppins mb-6">
+                    <h2 className="text-left text-black text-2xl lg:text-3xl font-extrabold font-['Poppins'] mb-2">
                         Peminjaman Tersedia
                     </h2>
 
@@ -269,7 +269,7 @@ const MahasiswaDashboard = () => {
                     {/* No Results */}
                     {filteredItems.length === 0 && (
                         <div className="text-center py-16">
-                            <p className="text-gray-500 text-xl font-poppins">
+                            <p className="text-gray-500 text-xl font-['Poppins']">
                                 {searchQuery ? 'Tidak ada item yang ditemukan' : 'Tidak ada data tersedia'}
                             </p>
                         </div>
