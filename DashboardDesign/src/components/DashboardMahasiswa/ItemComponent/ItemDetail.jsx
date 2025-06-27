@@ -4,6 +4,7 @@ import { barangAPI, kelasAPI, absenAPI } from '../../../services/api';
 import AbsenTable from '../TableComponent/AbsenTable';
 import KelasScheduleTable from '../TableComponent/KelasScheduleTable';
 import PeminjamanModal from '../Modals/PeminjamanModal';
+import backArrowIcon from '../../../assets/previous.png'; 
 
 const ProductDetail = () => {
     const navigate = useNavigate();
@@ -193,10 +194,15 @@ const ProductDetail = () => {
                     <div className="max-w-7xl mx-auto flex items-center gap-4">
                         <button
                             onClick={handleBackToDashboard}
-                            className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-300 transition-colors"
+                            className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-gray-300 transition-colors"
                         >
-                            <span className="text-xl">←</span>
+                        <img
+                            src={backArrowIcon}
+                            alt="Kembali"
+                            className="w-6 h-6"
+                        />
                         </button>
+                        
 
                         <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">MathRent</h1>
 
@@ -258,9 +264,13 @@ const ProductDetail = () => {
                 <div className="max-w-7xl mx-auto flex items-center gap-4">
                     <button
                         onClick={handleBackToDashboard}
-                        className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-300 transition-colors"
+                        className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-gray-300 transition-colors"
                     >
-                        <span className="text-xl">←</span>
+                        <img
+                            src={backArrowIcon}
+                            alt="Kembali"
+                            className="w-6 h-6"
+                        />
                     </button>
 
                     <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">MathRent</h1>
@@ -302,17 +312,23 @@ const ProductDetail = () => {
                             </div>
 
                             {/* Right Side - Details */}
-                            <div className="space-y-6">
+                            <div className="space-y-6 flex flex-col items-center">
                                 <h3 className="text-black text-2xl lg:text-3xl font-semibold font-poppins">
                                     {item.name}
                                 </h3>
 
-                                {/* Status badge - different for each type */}
                                 {isInventaris && (
-                                    <div className="flex items-center gap-4">
-                                        <div className={`px-4 py-2 rounded-2xl text-white text-base font-medium font-poppins ${isAvailable ? 'bg-green-400' : 'bg-red-600'
+                                    // Buat satu div yang membungkus keduanya dan atur dengan flex
+                                    <div className="flex items-center gap-16">
+                                        {/* Bagian Status Badge */}
+                                        <div className={`px-4 py-2 rounded-2xl text-white text-base font-medium font-['poppins'] ${isAvailable ? 'bg-green-400' : 'bg-red-600'
                                             }`}>
                                             {isAvailable ? 'Tersedia' : 'Belum Tersedia'}
+                                        </div>
+                                        
+                                        {/* Bagian Jumlah */}
+                                        <div className="text-black text-base font-semibold font-poppins">
+                                            Jumlah : {item.currentStock}/{item.maxStock}
                                         </div>
                                     </div>
                                 )}
@@ -328,12 +344,7 @@ const ProductDetail = () => {
                                     </div>
                                 )}
 
-                                {/* Stock info - only for inventaris */}
-                                {isInventaris && (
-                                    <div className="text-black text-base font-semibold font-poppins">
-                                        Jumlah : {item.currentStock}/{item.maxStock}
-                                    </div>
-                                )}
+                        
 
                                 {/* Ruangan specific info */}
                                 {isRuangan && (

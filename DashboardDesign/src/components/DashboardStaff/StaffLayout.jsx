@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import logoImage from '../../assets/MathRent.png';
+import gifloading from "../../assets/gifloading.gif";
 
 const StaffLayout = ({ children }) => {
     const { user, logout } = useAuth();
@@ -44,13 +46,35 @@ const StaffLayout = ({ children }) => {
     };
 
     const activeMenu = getActiveMenu();
-
+    const [loading, setLoading] = useState(true);
+    
+        useEffect(() => {
+            const timer = setTimeout(() => {
+            setLoading(false);
+            }, 2000);
+        
+            return () => clearTimeout(timer);
+        }, []);
+        
+        if (loading) {
+            return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+                <img src={gifloading} alt="Loading..." className="w-24 h-24 mb-4" />
+                <p className="text-red-700 font-semibold animate-pulse">Memuat konten...</p>
+            </div>
+            );
+        }
     return (
         <div className="min-h-screen bg-red-300/70">
             {/* Header - Fixed */}
-            <header className="w-full h-28 bg-white/95 shadow-sm fixed top-0 left-0 right-0 z-40">
+            <header className="w-full h-18 bg-white/100 shadow-sm fixed top-0 left-0 right-0 z-40">
                 <div className="flex items-center justify-between h-full px-4">
                     <div className="flex items-center">
+                        <img
+                            src={logoImage}
+                            alt="Logo MathRent"
+                            className="w-14 h-14 mr-2" 
+                        />
                         <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">
                             MathRent
                         </h1>
@@ -58,7 +82,6 @@ const StaffLayout = ({ children }) => {
 
 
                     <div className="flex items-center space-x-4">
-                        <div className="w-8 h-8 text-blue-600 cursor-pointer text-2xl">🔔</div>
                         <div className="flex items-center space-x-2">
                             <div className="w-14 h-14 bg-zinc-300 rounded-xl flex items-center justify-center">
                                 <div className="text-2xl">👤</div>
@@ -80,9 +103,9 @@ const StaffLayout = ({ children }) => {
                 </div>
             </header>
 
-            <div className="flex pt-28"> {/* Add padding top for fixed header */}
+            <div className="flex pt-18"> {/* Add padding top for fixed header */}
                 {/* Sidebar - Fixed */}
-                <aside className="w-80 h-screen bg-red-700/95 text-white pt-8 fixed left-0 z-30">
+                <aside className="w-60 h-screen bg-red-700/95 text-white pt-8 fixed left-0 z-30">
                     <nav className="space-y-8 px-4">
                         <div className="text-center">
                             <button
@@ -118,7 +141,7 @@ const StaffLayout = ({ children }) => {
                 </aside>
 
                 {/* Main Content Area */}
-                <main className="flex-1 ml-80"> {/* Add margin left for fixed sidebar */}
+                <main className="flex-1 ml-59"> {/* Add margin left for fixed sidebar */}
                     {/* Pass searchQuery sebagai prop ke children jika diperlukan */}
                     {React.cloneElement(children, { searchQuery })}
                 </main>

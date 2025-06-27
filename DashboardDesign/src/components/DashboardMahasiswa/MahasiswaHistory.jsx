@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { peminjamanAPI } from '../../services/api';
+import backArrowIcon from '../../assets/previous.png';
 
 const MahasiswaHistory = () => {
     const { user } = useAuth();
@@ -153,14 +154,32 @@ const MahasiswaHistory = () => {
     return (
         <div className="w-full px-4 lg:px-8 pb-8 p-10">
             <div className="max-w-5xl mx-auto">
-                
-                <a href="/mahasiswa/settings" className='items-start flex text-red-600'>Back</a>
+
                 {/* Page Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl lg:text-4xl font-extrabold text-black font-['Poppins'] mb-2">
-                        Riwayat Peminjaman
-                    </h1>
-                    <div className="w-full h-px bg-black mb-4"></div>
+                    {/* Back Button and Title */}
+                    <div className="flex items-center gap-4">
+                        <a
+                            href="/mahasiswa/settings"
+                            className="flex h-10 w-10 items-center justify-center rounded-lg transition-colors hover:bg-gray-300"
+                        >
+                            <img
+                                src={backArrowIcon}
+                                alt="Kembali"
+                                className="h-6 w-6"
+                            />
+                        </a>
+                        
+                        {/* Judul utama */}
+                        <h1 className="font-['Poppins'] text-3xl font-extrabold text-black lg:text-4xl">
+                            Riwayat Peminjaman
+                        </h1>
+                    </div>
+
+                    {/* Separator Line */}
+                    <div className="mb-4 mt-4 h-px w-full bg-black"></div>
+                    
+                    {/* Subtitle / Description */}
                     <p className="text-gray-600">
                         Semua riwayat peminjaman Anda - Total: {totalItems} peminjaman
                     </p>

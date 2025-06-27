@@ -88,6 +88,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
     };
 
     const fetchBarangData = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500)); // delay 1 detik
         try {
             const params = {
                 page: pagination.barang.currentPage,
@@ -123,6 +124,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
     };
 
     const fetchKelasData = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500)); // delay 1 detik
         try {
             const params = {
                 page: pagination.kelas.currentPage,
@@ -158,6 +160,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
     };
 
     const fetchAbsenData = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500)); // delay 500ms
         try {
             const currentPage = pagination.absen.currentPage;
             const semester = filters.absen.semester || null;
@@ -380,7 +383,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
     const renderTableHeaders = () => {
         const commonHeaders = (
             <>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">No</th>
+                <th className="px-4 py-4 text-left text-sm font-bold uppercase tracking-wider">No</th>
             </>
         );
 
@@ -389,35 +392,35 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                 return (
                     <>
                         {commonHeaders}
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Nama Barang</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Stok</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Satuan</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Lokasi</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Status</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Aksi</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Nama Barang</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Stok</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Satuan</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Lokasi</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Status</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Aksi</th>
                     </>
                 );
             case 'kelas':
                 return (
                     <>
                         {commonHeaders}
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Nama Kelas</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Gedung</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Lantai</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Kapasitas</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Aksi</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Nama Kelas</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Gedung</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Lantai</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Kapasitas</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Aksi</th>
                     </>
                 );
             case 'absen':
                 return (
                     <>
                         {commonHeaders}
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Mata Kuliah</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Kelas</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Dosen</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Semester</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Jurusan</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Aksi</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Mata Kuliah</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Kelas</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Dosen</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Semester</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Jurusan</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Aksi</th>
                     </>
                 );
             default:
@@ -431,12 +434,12 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
 
         return currentData.map((item, index) => (
             <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 text-sm text-gray-900">
                     {(currentPag.currentPage - 1) * perPage + index + 1}
                 </td>
                 {activeTab === 'barang' && (
                     <>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                             <div>
                                 <div className="text-sm font-medium text-gray-900">
                                     {item.nama}
@@ -448,25 +451,25 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                                 )}
                             </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             <span className={`font-bold ${item.stok <= 5 ? 'text-red-600' : 'text-green-600'}`}>
                                 {item.stok}
                             </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.satuan}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.lokasi || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                             {getStatusBadge(item.status)}
                         </td>
                     </>
                 )}
                 {activeTab === 'kelas' && (
                     <>
-                        <td className="px-6 py-4 whitespace-nowrap items-center">
+                        <td className="px-6 py-4 items-center">
                             <div>
                                 <div className="text-sm font-medium text-gray-900">
                                     {item.nama_kelas}
@@ -478,39 +481,39 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                                 )}
                             </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 items-center">
+                        <td className="px-6 py-4 text-sm text-gray-900 items-center">
                             {item.gedung || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.lantai || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.kapasitas || '-'}
                         </td>
                     </>
                 )}
                 {activeTab === 'absen' && (
                     <>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                             <div className="text-sm font-medium text-gray-900">
                                 {item.nama_matakuliah}
                             </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.kelas || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.dosen || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.semester || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.jurusan || '-'}
                         </td>
                     </>
                 )}
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <td className="px-6 py-4 text-sm font-medium">
                     <div className="flex space-x-2">
                         <button
                             onClick={() => handleEdit(item)}
@@ -622,6 +625,16 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
 
     const currentPag = getCurrentPagination();
     const currentData = getCurrentData();
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center p-12">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-white mx-auto mb-4"></div>
+                    <p className="text-white font-['Poppins'] text-xl">Memuat Data Inventaris...</p>
+                </div>
+            </div>
+        );
+    }  
 
     return (
         <div className="p-8">
@@ -677,9 +690,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                     + Tambah {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
                 </button>
                 
-                <div className="text-white font-['Poppins']">
-                    Total: {currentPag.totalItems} {activeTab}
-                </div>
+            
             </div>
 
             {/* Filter Section */}
@@ -712,12 +723,6 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
 
             {/* Table */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                {loading ? (
-                    <div className="flex items-center justify-center p-12">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
-                        <span className="ml-3 text-gray-600">Memuat data...</span>
-                    </div>
-                ) : (
                     <>
                         <div className="overflow-x-auto">
                             <table className="w-full">
@@ -793,7 +798,6 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                             </div>
                         )}
                     </>
-                )}
             </div>
 
             {/* Render appropriate modal */}
