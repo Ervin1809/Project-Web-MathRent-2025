@@ -15,6 +15,7 @@ import MahasiswaDashboard from './components/DashboardMahasiswa/MahasiswaDashboa
 import MahasiswaLayout from './components/DashboardMahasiswa/MahasiswaLayout';
 import MahasiswaSettings from './components/DashboardMahasiswa/MahasiswaSettings';
 import MahasiswaHistory from './components/DashboardMahasiswa/MahasiswaHistory';
+import PageNotFound from './components/PageNotFound'; 
 import './App.css';
 
 // Protected Route Component
@@ -124,6 +125,7 @@ const AppContent = () => {
       } />
 
       <Route path="/unauthorized" element={<div>Unauthorized Access</div>} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
