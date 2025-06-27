@@ -121,7 +121,7 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
             {/* Booking Form */}
             <div className="bg-white rounded-2xl border border-red-700 overflow-hidden">
                 <div className="bg-red-700 text-white px-6 py-4">
-                    <h3 className="text-xl font-semibold font-poppins">Booking Jadwal Kelas</h3>
+                    <h3 className="text-xl font-bold tracking-wide font-['Josefin Sans']">Booking Jadwal Kelas</h3>
                 </div>
 
                 <div className="p-6 space-y-4">
@@ -174,7 +174,7 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
                     {(startTime || endTime) && (
                         <div className="bg-gray-50 p-4 rounded-lg">
                             <h4 className="text-sm font-semibold text-gray-700 mb-2 font-poppins">Preview Booking:</h4>
-                            <p className="text-sm text-gray-600 font-poppins">
+                            <p className="text-base text-gray-700 tracking-wide font-['Josefin Sans']">
                                 📅 {selectedDate} | ⏰ {formatTimeDisplay(startTime)} - {formatTimeDisplay(endTime)}
                             </p>
                         </div>
@@ -229,11 +229,18 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
             {/* Existing Bookings - NOW WITH REAL DATA */}
             <div className="bg-white rounded-2xl border border-gray-300 overflow-hidden">
                 <div className="bg-gray-100 px-6 py-4">
-                    <h3 className="text-lg font-semibold font-poppins text-gray-800">
-                        Jadwal yang Sudah Dibooking ({selectedDate})
+                    {/* Judul Section */}
+                    <h3 className="text-xl font-bold font-['Josefin Sans'] text-gray-800 tracking-wide">
+                        Jadwal yang Sudah Dibooking
                     </h3>
+
+                    {/* Tanggal ditampilkan vertikal di bawah judul */}
+                    <p className="text-sm text-green-500 font-semibold font-['Poppins'] mt-1">
+                        {selectedDate}
+                    </p>
+
                     {schedule.length > 0 && (
-                        <p className="text-sm text-gray-600 font-poppins mt-1">
+                        <p className="text-sm text-gray-600 font-['Poppins'] mt-1">
                             Total: {schedule.length} booking
                         </p>
                     )}
@@ -252,18 +259,18 @@ const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <div className="flex items-center gap-2 mb-1">
-                                                <span className="text-red-700 font-semibold font-poppins">
+                                                <span className="text-red-700 text-base font-bold font-['Josefin Sans']">
                                                     ⏰ {booking.waktu_mulai} - {booking.waktu_selesai}
                                                 </span>
                                             </div>
-                                            <p className="text-sm text-gray-600 font-poppins">
+                                            <p className="text-sm text-gray-700 font-['Josefin Sans']">
                                                 👤 {booking.user_name} ({booking.user_nim})
                                             </p>
-                                            <p className="text-xs text-gray-500 font-poppins mt-1">
+                                            <p className="text-xs text-gray-500 font-['Poppins'] mt-1">
                                                 ID Peminjaman: #{booking.peminjaman_id}
                                             </p>
                                         </div>
-                                        <span className="bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full">
+                                        <span className="bg-red-100 text-red-800 text-xs font-medium font-['Inter'] px-3 py-1 rounded-full shadow-sm">
                                             {booking.status === 'disetujui' ? 'Approved' : booking.status}
                                         </span>
                                     </div>

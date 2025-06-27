@@ -47,7 +47,7 @@ const ItemCard = ({
             {/* Status Badge */}
             {type === 'inventaris' ?
                 <div className="flex justify-center mt-4">
-                    <div className={`px-3 py-1 rounded-2xl text-white text-[10px] font-medium font-poppins ${availability ? 'bg-green-400' : 'bg-red-600'
+                    <div className={`px-3 py-1 rounded-2xl text-white text-[10px] font-medium font-['Inter'] ${availability ? 'bg-green-400' : 'bg-red-600'
                         }`}>
                         {availability ? 'Tersedia' : 'Belum Tersedia'}
                     </div>
@@ -60,12 +60,12 @@ const ItemCard = ({
             {/* Item Name */}
             {type === 'inventaris' ?
                 <div className="text-center mt-4 px-4">
-                    <h3 className="text-black text-lg lg:text-xl font-semibold font-poppins truncate">
+                    <h3 className="text-black text-lg lg:text-xl font-semibold font-['Josefin Sans'] truncate">
                         {name || `Nama ${type === 'inventaris' ? 'Inventaris' : 'Ruangan'}`}
                     </h3>
                 </div> :
                 <div className="text-center mt-4 px-4">
-                    <h3 className="text-black text-lg lg:text-xl font-semibold font-poppins">
+                    <h3 className="text-black text-lg lg:text-xl font-semibold font-['Josefin Sans'] truncate">
                         {name || `Nama ${type === 'inventaris' ? 'Inventaris' : 'Ruangan'}`}
                     </h3>
                 </div>
@@ -74,7 +74,7 @@ const ItemCard = ({
             {/* Stock Info */}
             {type === 'inventaris' ?
                 <div className="text-center mt-2 px-4">
-                    <p className="text-black text-sm lg:text-base font-semibold font-poppins">
+                    <p className="text-black text-sm lg:text-base font-semibold font-['Josefin Sans']">
                         Jumlah : {currentStock}/{maxStock}
                     </p>
                 </div> :

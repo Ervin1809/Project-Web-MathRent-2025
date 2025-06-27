@@ -198,10 +198,10 @@ if (isAbsenGroup) {
                         <span className="text-xl">←</span>
                     </button>
 
-                    <h1 className="text-red-700 text-2xl font-bold font-poppins">MathRent</h1>
+                    <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">MathRent</h1>
 
                     <div className="ml-auto">
-                        <h2 className="text-black text-2xl lg:text-3xl font-extrabold font-poppins">
+                        <h2 className="text-black text-2xl lg:text-3xl font-extrabold font-['Poppins']">
                             Detail Absen
                         </h2>
                     </div>
@@ -218,10 +218,10 @@ if (isAbsenGroup) {
                 <div className="max-w-7xl mx-auto">
                     {/* Header Info */}
                     <div className="mb-6">
-                        <h3 className="text-2xl font-bold text-gray-900 font-poppins mb-2">
+                        <h3 className="text-2xl font-bold text-gray-900  font-['Inter'] mb-2">
                             {item.name}
                         </h3>
-                        <div className="flex gap-4 text-sm text-gray-600 font-poppins">
+                        <div className="flex gap-4 text-sm text-gray-600 font-['Inter']">
                             <span>Program Studi: {item.prodi}</span>
                             <span>•</span>
                             <span>Semester: {item.semester}</span>
@@ -263,10 +263,10 @@ return (
                     <span className="text-xl">←</span>
                 </button>
 
-                <h1 className="text-red-700 text-2xl font-bold font-poppins">MathRent</h1>
+                <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">MathRent</h1>
 
                 <div className="ml-auto">
-                    <h2 className="text-black text-2xl lg:text-3xl font-extrabold font-poppins">
+                    <h2 className="text-black text-2xl lg:text-3xl font-extrabold font-['Poppins']">
                         Detail {isRuangan ? 'Ruangan' : 'Inventaris'}
                     </h2>
                 </div>
