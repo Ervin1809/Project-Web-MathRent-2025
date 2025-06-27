@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import logoImage from '../../assets/MathRent.png';
 
 const MahasiswaLayout = ({ children }) => {
     const { user, logout } = useAuth();
@@ -53,12 +54,19 @@ const MahasiswaLayout = ({ children }) => {
         <div className="min-h-screen bg-white">
             
             {/* Header Navigation - Fixed */}
-            <header className="w-full py-6 px-4 lg:px-8 bg-white shadow-sm fixed top-0 left-0 right-0 z-40">
+            <header className="w-full py-4 px-4 lg:px-8 bg-white shadow-sm fixed top-0 left-0 right-0 z-40">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
                     {/* Logo */}
-                    <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">
-                        MathRent
-                    </h1>
+                    <div className="flex items-center">
+                        <img
+                        src={logoImage}
+                        alt="Logo MathRent"
+                        className="w-12 h-12 mr-2" 
+                        />
+                        <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">
+                            MathRent
+                        </h1>
+                    </div>
 
                     {/* Navigation Links */}
                     <nav className="flex items-center gap-4 lg:gap-8">

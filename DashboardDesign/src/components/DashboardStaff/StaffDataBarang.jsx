@@ -380,7 +380,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
     const renderTableHeaders = () => {
         const commonHeaders = (
             <>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">No</th>
+                <th className="px-4 py-4 text-left text-sm font-bold uppercase tracking-wider">No</th>
             </>
         );
 
@@ -389,35 +389,35 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                 return (
                     <>
                         {commonHeaders}
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Nama Barang</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Stok</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Satuan</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Lokasi</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Status</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Aksi</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Nama Barang</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Stok</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Satuan</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Lokasi</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Status</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Aksi</th>
                     </>
                 );
             case 'kelas':
                 return (
                     <>
                         {commonHeaders}
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Nama Kelas</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Gedung</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Lantai</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Kapasitas</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Aksi</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Nama Kelas</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Gedung</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Lantai</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Kapasitas</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Aksi</th>
                     </>
                 );
             case 'absen':
                 return (
                     <>
                         {commonHeaders}
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Mata Kuliah</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Kelas</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Dosen</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Semester</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Jurusan</th>
-                        <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Aksi</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Mata Kuliah</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Kelas</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Dosen</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Semester</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Jurusan</th>
+                        <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Aksi</th>
                     </>
                 );
             default:
@@ -431,12 +431,12 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
 
         return currentData.map((item, index) => (
             <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 text-sm text-gray-900">
                     {(currentPag.currentPage - 1) * perPage + index + 1}
                 </td>
                 {activeTab === 'barang' && (
                     <>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                             <div>
                                 <div className="text-sm font-medium text-gray-900">
                                     {item.nama}
@@ -448,25 +448,25 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                                 )}
                             </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             <span className={`font-bold ${item.stok <= 5 ? 'text-red-600' : 'text-green-600'}`}>
                                 {item.stok}
                             </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.satuan}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.lokasi || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                             {getStatusBadge(item.status)}
                         </td>
                     </>
                 )}
                 {activeTab === 'kelas' && (
                     <>
-                        <td className="px-6 py-4 whitespace-nowrap items-center">
+                        <td className="px-6 py-4 items-center">
                             <div>
                                 <div className="text-sm font-medium text-gray-900">
                                     {item.nama_kelas}
@@ -478,39 +478,39 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                                 )}
                             </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 items-center">
+                        <td className="px-6 py-4 text-sm text-gray-900 items-center">
                             {item.gedung || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.lantai || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.kapasitas || '-'}
                         </td>
                     </>
                 )}
                 {activeTab === 'absen' && (
                     <>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                             <div className="text-sm font-medium text-gray-900">
                                 {item.nama_matakuliah}
                             </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.kelas || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.dosen || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.semester || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                             {item.jurusan || '-'}
                         </td>
                     </>
                 )}
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <td className="px-6 py-4 text-sm font-medium">
                     <div className="flex space-x-2">
                         <button
                             onClick={() => handleEdit(item)}
@@ -677,9 +677,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                     + Tambah {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
                 </button>
                 
-                <div className="text-white font-['Poppins']">
-                    Total: {currentPag.totalItems} {activeTab}
-                </div>
+            
             </div>
 
             {/* Filter Section */}

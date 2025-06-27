@@ -124,10 +124,10 @@ const StaffRiwayat = ({ searchQuery = '' }) => {
         <div className="p-8">
             <div className="text-center mb-8">
                 <h1 className="text-6xl font-bold text-white font-['Inter'] mb-4">
-                    Riwayat Peminjaman
+                    Riwayat Aktivitas
                 </h1>
                 <p className="text-white text-lg font-['Poppins']">
-                    Total: {totalItems} peminjaman
+                    Total: {totalItems} Riwayat Peminjaman
                 </p>
             </div>
 
