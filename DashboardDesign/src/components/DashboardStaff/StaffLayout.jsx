@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logoImage from '../../assets/MathRent.png';
+import gifloading from "../../assets/gifloading.gif";
+
 const StaffLayout = ({ children }) => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -44,7 +46,24 @@ const StaffLayout = ({ children }) => {
     };
 
     const activeMenu = getActiveMenu();
-
+    const [loading, setLoading] = useState(true);
+    
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+    
+        return () => clearTimeout(timer);
+      }, []);
+    
+      if (loading) {
+        return (
+          <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+            <img src={gifloading} alt="Loading..." className="w-24 h-24 mb-4" />
+            <p className="text-red-700 font-semibold animate-pulse">Memuat konten...</p>
+          </div>
+        );
+      }
     return (
         <div className="min-h-screen bg-red-300/70">
             {/* Header - Fixed */}

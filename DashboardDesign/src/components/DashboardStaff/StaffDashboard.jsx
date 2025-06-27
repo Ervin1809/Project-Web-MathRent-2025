@@ -20,14 +20,14 @@ const StaffDashboard = ({ searchQuery = '' }) => {
 
     useEffect(() => {
         fetchTodayData();
-    }, []);
+    }, [activeTab]);
 
     const fetchTodayData = async () => {
+        setLoading(true);
         try {
-            setLoading(true);
             setError('');
-
-            const response = await peminjamanAPI.getTodayPeminjaman();
+            await new Promise(resolve => setTimeout(resolve, 300));
+            const response = await peminjamanAPI.getTodayPeminjaman(activeTab);
             console.log('🔄 Today Peminjaman Response:', response.data);
 
             const peminjamanData = response.data || [];
@@ -265,8 +265,8 @@ const StaffDashboard = ({ searchQuery = '' }) => {
         return (
             <div className="flex items-center justify-center p-12">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-                    <p className="text-white font-['Poppins'] text-xl">Memuat data peminjaman hari ini...</p>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-white mx-auto mb-4"></div>
+                    <p className="text-white font-['Poppins'] text-xl">Memuat daftar peminjaman...</p>
                 </div>
             </div>
         );

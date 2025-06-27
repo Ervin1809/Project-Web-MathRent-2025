@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect  } from 'react';
 import { peminjamanAPI } from '../../services/api';
 
 const StaffRiwayat = ({ searchQuery = '' }) => {
@@ -23,6 +23,7 @@ const StaffRiwayat = ({ searchQuery = '' }) => {
     }, [currentPage, statusFilter, dateFromFilter, dateToFilter, searchQuery]);
 
     const fetchRiwayatData = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500)); // delay 1 detik
         try {
             setLoading(true);
             setError('');
@@ -119,6 +120,16 @@ const StaffRiwayat = ({ searchQuery = '' }) => {
         setDateToFilter('');
         setCurrentPage(1);
     };
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center p-12">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-white mx-auto mb-4"></div>
+                    <p className="text-white font-['Poppins'] text-xl">Memuat Riwayat Aktivitas...</p>
+                </div>
+            </div>
+        );
+    }   
 
     return (
         <div className="p-8">
@@ -206,12 +217,6 @@ const StaffRiwayat = ({ searchQuery = '' }) => {
 
             {/* Table */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                {loading ? (
-                    <div className="flex items-center justify-center p-12">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
-                        <span className="ml-3 text-gray-600">Memuat data...</span>
-                    </div>
-                ) : (
                     <>
                         <div className="overflow-x-auto">
                             <table className="w-full">
@@ -329,7 +334,6 @@ const StaffRiwayat = ({ searchQuery = '' }) => {
                             </div>
                         )}
                     </>
-                )}
             </div>
         </div>
     );

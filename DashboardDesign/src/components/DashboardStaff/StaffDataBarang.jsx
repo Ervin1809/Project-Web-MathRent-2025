@@ -88,6 +88,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
     };
 
     const fetchBarangData = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500)); // delay 1 detik
         try {
             const params = {
                 page: pagination.barang.currentPage,
@@ -123,6 +124,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
     };
 
     const fetchKelasData = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500)); // delay 1 detik
         try {
             const params = {
                 page: pagination.kelas.currentPage,
@@ -158,6 +160,7 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
     };
 
     const fetchAbsenData = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500)); // delay 500ms
         try {
             const currentPage = pagination.absen.currentPage;
             const semester = filters.absen.semester || null;
@@ -622,6 +625,16 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
 
     const currentPag = getCurrentPagination();
     const currentData = getCurrentData();
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center p-12">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-white mx-auto mb-4"></div>
+                    <p className="text-white font-['Poppins'] text-xl">Memuat Data Inventaris...</p>
+                </div>
+            </div>
+        );
+    }  
 
     return (
         <div className="p-8">
@@ -710,12 +723,6 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
 
             {/* Table */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                {loading ? (
-                    <div className="flex items-center justify-center p-12">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
-                        <span className="ml-3 text-gray-600">Memuat data...</span>
-                    </div>
-                ) : (
                     <>
                         <div className="overflow-x-auto">
                             <table className="w-full">
@@ -791,7 +798,6 @@ const StaffDataBarang = ({ searchQuery = '' }) => {
                             </div>
                         )}
                     </>
-                )}
             </div>
 
             {/* Render appropriate modal */}
