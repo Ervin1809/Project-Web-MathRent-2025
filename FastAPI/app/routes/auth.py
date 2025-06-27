@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from datetime import timedelta
 from app.database import get_db
 from app.models import User, RoleEnum
-from app.schemas.auth import UserRegister, UserLogin, Token, UserResponse
+from app.schemas.auth import UserRegister, UserLogin, Token, UserResponse, ChangePasswordRequest, ChangePasswordResponse 
 from app.auth import (
     verify_password, 
     get_password_hash, 
@@ -165,3 +165,67 @@ def create_staff_user(user_data: UserRegister, db: Session = Depends(get_db)):
     db.refresh(db_user)
     
     return db_user
+
+@router.put("/change-password", response_model=ChangePasswordResponse)
+def change_password(
+    request: ChangePasswordRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Change password for authenticated user
+    """
+    try:
+        print(f"🔄 Password change attempt for user: {current_user.name} ({current_user.nim})")
+        
+        # Verify current password if provided
+        if request.current_password:
+            if not verify_password(request.current_password, current_user.kode_akses):
+                print(f"❌ Current password verification failed for user: {current_user.nim}")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Password saat ini tidak benar"
+                )
+            print(f"✅ Current password verified for user: {current_user.nim}")
+        else:
+            print(f"⚠️ No current password provided - allowing change for user: {current_user.nim}")
+        
+        # Validate new password (sudah divalidasi di schema, tapi double check)
+        if len(request.new_password) < 6:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Password baru minimal 6 karakter"
+            )
+        
+        # Check if new password is different from current (if current is provided)
+        if request.current_password and request.current_password == request.new_password:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Password baru harus berbeda dari password saat ini"
+            )
+        
+        # Hash new password using the same function from auth.py
+        hashed_new_password = get_password_hash(request.new_password)
+        
+        # Update user password in database
+        current_user.kode_akses = hashed_new_password  # Using kode_akses field like in your models
+        
+        db.commit()
+        db.refresh(current_user)
+        
+        print(f"✅ Password successfully changed for user: {current_user.nim}")
+        
+        return ChangePasswordResponse(
+            message="Password berhasil diubah",
+            success=True
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        print(f"❌ Error changing password for user {current_user.nim}: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Terjadi kesalahan saat mengubah password: {str(e)}"
+        )

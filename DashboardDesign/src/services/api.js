@@ -51,6 +51,11 @@ export const peminjamanAPI = {
     getMy: (params) => api.get('/peminjaman/my', { params }),
     updateMy: (id, data) => api.put(`/peminjaman/my/${id}`, data),
     deleteMy: (id) => api.delete(`/peminjaman/my/${id}`),
+    getUserHistory: (page = 1, per_page = 10) => {
+        return api.get('/peminjaman/user-history', {
+            params: { page, per_page }
+        });
+    },
 
     // Staff endpoints
     getAll: (params) => api.get('/peminjaman/', { params }),
@@ -58,12 +63,16 @@ export const peminjamanAPI = {
     getDetail: (id) => api.get(`/peminjaman/${id}`),
     approve: (id, data) => api.put(`/peminjaman/${id}/approve`, data),
     delete: (id) => api.delete(`/peminjaman/${id}`),
+    getTodayPeminjaman: () => api.get('/peminjaman/staff/today'),
+    getHistoryPeminjaman: (params = {}) => api.get('/peminjaman/staff/history', { params }),
+    getStatistics: () => api.get('/peminjaman/staff/statistics'),
+
 
     // NEW: Get kelas schedule by date
     getKelasSchedule: (kelasId, tanggal) => {
-        const params = { 
+        const params = {
             kelas_id: kelasId,
-            tanggal: tanggal 
+            tanggal: tanggal
         };
         return api.get('/peminjaman/kelas/schedule', { params });
     },
@@ -77,8 +86,8 @@ export const barangAPI = {
     getAll: (params = {}) => api.get('/barang/', { params }),
     getTersedia: (page = 1, per_page = 20) => {
         console.log('📞 barangAPI.getTersedia called with:', { page, per_page });
-        return api.get('/barang/tersedia', { 
-            params: { page, per_page } 
+        return api.get('/barang/tersedia', {
+            params: { page, per_page }
         });
     },
     getDetail: (id) => api.get(`/barang/${id}`),
@@ -110,6 +119,23 @@ export const absenAPI = {
     create: (data) => api.post('/absen/', data),
     update: (id, data) => api.put(`/absen/${id}`, data),
     delete: (id) => api.delete(`/absen/${id}`),
+};
+// Add this to your existing api.js
+export const userAPI = {
+    // Get current user profile
+    getProfile: () => api.get('/auth/profile'),
+    
+    // Update user profile
+    updateProfile: (data) => api.put('/auth/profile', data),
+    
+    // Change password
+    changePassword: (data) => api.put('/auth/change-password', data),
+    
+    // Get user notifications settings
+    getNotificationSettings: () => api.get('/auth/notification-settings'),
+    
+    // Update notification settings
+    updateNotificationSettings: (data) => api.put('/auth/notification-settings', data),
 };
 
 export default api;

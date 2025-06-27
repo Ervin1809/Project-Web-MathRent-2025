@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { peminjamanService } from '../../services/peminjamanService';
+import { peminjamanService } from '../../../services/peminjamanService';
 
 const PeminjamanModal = ({ isOpen, onClose, item, bookingData = null, absenCourse = null }) => {
     const [formData, setFormData] = useState({
