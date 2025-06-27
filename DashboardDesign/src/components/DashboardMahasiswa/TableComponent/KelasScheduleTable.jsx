@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { peminjamanAPI } from '../../services/api';
+import { peminjamanAPI } from '../../../services/api';
 
 const KelasScheduleTable = ({ kelasId, onRequestKelas }) => {
     const [schedule, setSchedule] = useState([]);

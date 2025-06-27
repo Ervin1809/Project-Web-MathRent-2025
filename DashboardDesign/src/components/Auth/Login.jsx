@@ -43,10 +43,10 @@ const Login = () => {
 
                 if (result.user.role === 'staff') {
                     console.log('🏢 LOGIN DEBUG: Redirecting to staff dashboard');
-                    navigate('/staff/dashboard');
+                    navigate('/staff');
                 } else {
                     console.log('🎓 LOGIN DEBUG: Redirecting to mahasiswa dashboard');
-                    navigate('/mahasiswa/dashboard');
+                    navigate('/mahasiswa');
                 }
             } else {
                 console.error('❌ LOGIN DEBUG: Login failed');

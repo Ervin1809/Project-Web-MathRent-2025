@@ -65,7 +65,7 @@ const ItemCard = ({
                     </h3>
                 </div> :
                 <div className="text-center mt-4 px-4">
-                    <h3 className="text-black text-lg lg:text-xl font-semibold font-['Josefin Sans'] truncate">
+                    <h3 className="text-black text-lg lg:text-xl font-semibold font-['Josefin Sans']">
                         {name || `Nama ${type === 'inventaris' ? 'Inventaris' : 'Ruangan'}`}
                     </h3>
                 </div>
@@ -75,7 +75,7 @@ const ItemCard = ({
             {type === 'inventaris' ?
                 <div className="text-center mt-2 px-4">
                     <p className="text-black text-sm lg:text-base font-semibold font-['Josefin Sans']">
-                        Jumlah : {currentStock}/{maxStock}
+                        Jumlah : {maxStock}
                     </p>
                 </div> :
                 <div className="text-center mt-2 px-4">

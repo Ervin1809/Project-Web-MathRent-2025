@@ -53,6 +53,36 @@ class UserResponse(BaseModel):
         if hasattr(v, "isoformat"):
             return v.isoformat()
         return str(v)
+    
+class ChangePasswordRequest(BaseModel):
+    current_password: str = None  # Optional untuk beberapa kasus
+    new_password: str
+    
+    @validator('new_password')
+    def validate_new_password(cls, v):
+        if len(v) < 6:
+            raise ValueError('Password baru minimal 6 karakter')
+        return v
+    
+    class Config:
+        schema_extra = {
+            "example": {
+                "current_password": "oldpassword123",
+                "new_password": "newpassword123"
+            }
+        }
+
+class ChangePasswordResponse(BaseModel):
+    message: str
+    success: bool
+    
+    class Config:
+        schema_extra = {
+            "example": {
+                "message": "Password berhasil diubah",
+                "success": True
+            }
+        }
 
 # Update forward reference
 Token.model_rebuild()

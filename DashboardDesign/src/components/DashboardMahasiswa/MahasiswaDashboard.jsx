@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import ItemCard from './ItemComponent/ItemCard';
+import SearchFilter from './Modals/SearchFilter';
 import { useNavigate } from 'react-router-dom';
-import ItemCard from './ItemCard';
-import SearchFilter from './SearchFilter';
 
-// Import API functions (sesuaikan dengan structure api.js yang sudah ada)
+// Import API functions
 import { barangAPI, kelasAPI, absenAPI } from '../../services/api';
 
 const MahasiswaDashboard = () => {
-    const { user, logout } = useAuth();
     const navigate = useNavigate();
     
     // State untuk search & filter
@@ -55,7 +53,7 @@ const MahasiswaDashboard = () => {
                 description: `${barang.nama} - Lokasi: ${barang.lokasi}`
             }));
 
-            // FIXED: Transform kelas data - REMOVE status reference
+            // Transform kelas data
             const kelasItems = (kelasResponse.data.data || kelasResponse.data).map(kelas => ({
                 id: kelas.id,
                 type: 'ruangan',
@@ -67,7 +65,6 @@ const MahasiswaDashboard = () => {
                 gedung: kelas.gedung,
                 lantai: kelas.lantai,
                 fasilitas: kelas.fasilitas,
-                // REMOVED: status: kelas.status (field tidak ada lagi)
                 location: `${kelas.gedung} Lantai ${kelas.lantai}`,
                 isTimeBasedBooking: true // Mark as time-based booking
             }));
@@ -144,22 +141,10 @@ const MahasiswaDashboard = () => {
         return matchesSearch && matchesFilter;
     });
 
-    // Handle logout
-    const handleLogout = () => {
-        console.log('🔄 Logging out user:', user);
-        logout();
-        navigate('/');
-    };
-
     // Handle card click
     const handleCardClick = (itemData) => {
         console.log('Card clicked:', itemData);
         navigate(`/mahasiswa/detail/${itemData.type}/${itemData.id}`);
-    };
-
-    // Handle navigation clicks
-    const handleNavClick = (section) => {
-        console.log('Navigation clicked:', section);
     };
 
     if (loading) {
@@ -190,92 +175,50 @@ const MahasiswaDashboard = () => {
     }
 
     return (
-        <div className="min-h-screen bg-white">
-            
-            {/* Header Navigation */}
-            <header className="w-full py-6 px-4 lg:px-8">
-                <div className="max-w-7xl mx-auto flex justify-between items-center">
-                    {/* Logo */}
-                    <h1 className="text-red-700 text-2xl font-bold font-['Poppins']">
-                        MathRent
-                    </h1>
+        <div className="w-full px-4 lg:px-8 pb-8">
+            <div className="max-w-7xl mx-auto">
+                
+                {/* Section Title */}
+                <h2 className="text-left text-black text-2xl lg:text-3xl font-extrabold font-['Poppins'] mb-2">
+                    Peminjaman Tersedia
+                </h2>
 
-                    {/* Navigation Links */}
-                    <nav className="flex items-center gap-4 lg:gap-8">
-                        <button 
-                            onClick={() => handleNavClick('home')}
-                            className="text-black text-lg lg:text-xl font-normal font-['Poppins'] underline hover:text-red-700 transition-colors"
-                        >
-                            Home
-                        </button>
-                        <button 
-                            onClick={() => handleNavClick('about')}
-                            className="text-black text-lg lg:text-xl font-normal font-['Poppins'] hover:text-red-700 transition-colors"
-                        >
-                            About
-                        </button>
-                        <button 
-                            onClick={() => handleNavClick('contact')}
-                            className="text-black text-lg lg:text-xl font-normal font-['Poppins'] hover:text-red-700 transition-colors"
-                        >
-                            Contact
-                        </button>
-                        <button 
-                            onClick={handleLogout}
-                            className="text-red-600 text-lg lg:text-xl font-normal font-['Poppins'] hover:text-red-700 transition-colors"
-                        >
-                            Logout
-                        </button>
-                    </nav>
+                {/* Divider Line */}
+                <div className="w-full h-px bg-black mb-6"></div>
+
+                {/* Search & Filter */}
+                <SearchFilter
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    activeFilter={activeFilter}
+                    onFilterChange={setActiveFilter}
+                />
+
+                {/* Items Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                    {filteredItems.map((item) => (
+                        <ItemCard
+                            key={`${item.type}-${item.id}`}
+                            id={item.id}
+                            type={item.type}
+                            name={item.name}
+                            currentStock={item.currentStock}
+                            maxStock={item.maxStock}
+                            image={item.image}
+                            onCardClick={handleCardClick}
+                        />
+                    ))}
                 </div>
-            </header>
 
-            {/* Main Content */}
-            <main className="w-full px-4 lg:px-8 pb-8">
-                <div className="max-w-7xl mx-auto">
-                    
-                    {/* Section Title */}
-                    <h2 className="text-left text-black text-2xl lg:text-3xl font-extrabold font-['Poppins'] mb-2">
-                        Peminjaman Tersedia
-                    </h2>
-
-                    {/* Divider Line */}
-                    <div className="w-full h-px bg-black mb-6"></div>
-
-                    {/* Search & Filter */}
-                    <SearchFilter
-                        searchQuery={searchQuery}
-                        onSearchChange={setSearchQuery}
-                        activeFilter={activeFilter}
-                        onFilterChange={setActiveFilter}
-                    />
-
-                    {/* Items Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
-                        {filteredItems.map((item) => (
-                            <ItemCard
-                                key={`${item.type}-${item.id}`}
-                                id={item.id}
-                                type={item.type}
-                                name={item.name}
-                                currentStock={item.currentStock}
-                                maxStock={item.maxStock}
-                                image={item.image}
-                                onCardClick={handleCardClick}
-                            />
-                        ))}
+                {/* No Results */}
+                {filteredItems.length === 0 && (
+                    <div className="text-center py-16">
+                        <p className="text-gray-500 text-xl font-['Poppins']">
+                            {searchQuery ? 'Tidak ada item yang ditemukan' : 'Tidak ada data tersedia'}
+                        </p>
                     </div>
-
-                    {/* No Results */}
-                    {filteredItems.length === 0 && (
-                        <div className="text-center py-16">
-                            <p className="text-gray-500 text-xl font-['Poppins']">
-                                {searchQuery ? 'Tidak ada item yang ditemukan' : 'Tidak ada data tersedia'}
-                            </p>
-                        </div>
-                    )}
-                </div>
-            </main>
+                )}
+            </div>
         </div>
     );
 };

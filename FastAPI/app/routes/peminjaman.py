@@ -126,7 +126,7 @@ def create_peminjaman_mahasiswa(
 @router.get("/my", response_model=List[PeminjamanResponse])
 def get_my_peminjaman(
     page: int = Query(1, ge=1),
-    per_page: int = Query(10, ge=1, le=100),
+    per_page: int = Query(100, ge=1, le=100),
     status: StatusPeminjamanEnum = Query(None, description="Filter by status"),
     db: Session = Depends(get_db),
     current_user: User = Depends(require_mahasiswa)
@@ -355,7 +355,257 @@ def expand_peminjaman_items(peminjaman: Peminjaman, db: Session):
             })
     return items
 
-# === ENDPOINTS UNTUK STAFF ===
+
+# Tambahkan import yang diperlukan di atas
+from datetime import date, datetime, timedelta
+
+# Tambahkan setelah endpoint yang sudah ada, sebelum bagian terakhir
+
+# =====================================================================
+# ================= ENDPOINTS KHUSUS UNTUK STAFF DASHBOARD ===========
+# =====================================================================
+
+@router.get("/staff/today", response_model=List[PeminjamanResponse])
+def get_today_peminjaman_staff(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_staff)
+):
+    """Get peminjaman hari ini untuk staff dashboard"""
+    today = date.today()
+    
+    peminjaman_list = db.query(Peminjaman).filter(
+        Peminjaman.tanggal_peminjaman == today
+    ).order_by(Peminjaman.created_at.desc()).all()
+    
+    # Build response dengan data lengkap
+    result = []
+    for p in peminjaman_list:
+        data = PeminjamanResponse.from_orm(p)
+        if p.user:
+            data.user_name = p.user.name
+            data.user_nim = p.user.nim
+        if p.approver:
+            data.approver_name = p.approver.name
+        
+        # Expand details dengan item info
+        expanded_details = []
+        for detail in p.details:
+            detail_dict = {
+                "id": detail.id,
+                "reference_type": detail.reference_type,
+                "reference_id": detail.reference_id,
+                "jumlah": detail.jumlah,
+                "waktu_mulai": detail.waktu_mulai,
+                "waktu_selesai": detail.waktu_selesai,
+            }
+            
+            # Add referenced item data
+            if detail.reference_type == ReferenceTypeEnum.barang:
+                barang = db.query(Barang).filter(Barang.id == detail.reference_id).first()
+                if barang:
+                    detail_dict["barang"] = {
+                        "id": barang.id,
+                        "nama": barang.nama,
+                        "stok": barang.stok,
+                        "satuan": barang.satuan,
+                        "lokasi": barang.lokasi
+                    }
+            elif detail.reference_type == ReferenceTypeEnum.kelas:
+                kelas = db.query(Kelas).filter(Kelas.id == detail.reference_id).first()
+                if kelas:
+                    detail_dict["kelas"] = {
+                        "id": kelas.id,
+                        "nama_kelas": kelas.nama_kelas,
+                        "gedung": kelas.gedung,
+                        "lantai": kelas.lantai,
+                        "kapasitas": kelas.kapasitas
+                    }
+            elif detail.reference_type == ReferenceTypeEnum.absen:
+                absen = db.query(Absen).filter(Absen.id == detail.reference_id).first()
+                if absen:
+                    detail_dict["absen"] = {
+                        "id": absen.id,
+                        "nama_matakuliah": absen.nama_matakuliah,
+                        "kelas": absen.kelas,
+                        "dosen": absen.dosen,
+                        "jurusan": absen.jurusan,
+                        "semester": absen.semester
+                    }
+            
+            expanded_details.append(detail_dict)
+        
+        data.details = expanded_details
+        result.append(data)
+    
+    return result
+
+@router.get("/staff/history", response_model=dict)
+def get_history_peminjaman_staff(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+    status: StatusPeminjamanEnum = Query(None, description="Filter by status"),
+    tanggal_mulai: date = Query(None, description="Filter from date"),
+    tanggal_akhir: date = Query(None, description="Filter to date"),
+    search: str = Query(None, description="Search by user name or nim"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_staff)
+):
+    """Get riwayat peminjaman untuk staff dengan pagination dan filter"""
+    skip = (page - 1) * per_page
+    query = db.query(Peminjaman)
+    
+    # Apply filters
+    if status:
+        query = query.filter(Peminjaman.status == status)
+    if tanggal_mulai:
+        query = query.filter(Peminjaman.tanggal_peminjaman >= tanggal_mulai)
+    if tanggal_akhir:
+        query = query.filter(Peminjaman.tanggal_peminjaman <= tanggal_akhir)
+    if search:
+        # Join dengan User untuk search by name/nim
+        query = query.join(User).filter(
+            (User.name.ilike(f"%{search}%")) | 
+            (User.nim.ilike(f"%{search}%"))
+        )
+    
+    # Get total count
+    total = query.count()
+    
+    # Get paginated results
+    peminjaman_list = query.order_by(Peminjaman.created_at.desc()).offset(skip).limit(per_page).all()
+    
+    # Build response
+    items = []
+    for p in peminjaman_list:
+        data = PeminjamanResponse.from_orm(p)
+        if p.user:
+            data.user_name = p.user.name
+            data.user_nim = p.user.nim
+        if p.approver:
+            data.approver_name = p.approver.name
+        
+        # Expand details dengan item info (sama seperti today endpoint)
+        expanded_details = []
+        for detail in p.details:
+            detail_dict = {
+                "id": detail.id,
+                "reference_type": detail.reference_type,
+                "reference_id": detail.reference_id,
+                "jumlah": detail.jumlah,
+                "waktu_mulai": detail.waktu_mulai,
+                "waktu_selesai": detail.waktu_selesai,
+            }
+            
+            if detail.reference_type == ReferenceTypeEnum.barang:
+                barang = db.query(Barang).filter(Barang.id == detail.reference_id).first()
+                if barang:
+                    detail_dict["barang"] = {
+                        "id": barang.id,
+                        "nama": barang.nama,
+                        "stok": barang.stok,
+                        "satuan": barang.satuan,
+                        "lokasi": barang.lokasi
+                    }
+            elif detail.reference_type == ReferenceTypeEnum.kelas:
+                kelas = db.query(Kelas).filter(Kelas.id == detail.reference_id).first()
+                if kelas:
+                    detail_dict["kelas"] = {
+                        "id": kelas.id,
+                        "nama_kelas": kelas.nama_kelas,
+                        "gedung": kelas.gedung,
+                        "lantai": kelas.lantai,
+                        "kapasitas": kelas.kapasitas
+                    }
+            elif detail.reference_type == ReferenceTypeEnum.absen:
+                absen = db.query(Absen).filter(Absen.id == detail.reference_id).first()
+                if absen:
+                    detail_dict["absen"] = {
+                        "id": absen.id,
+                        "nama_matakuliah": absen.nama_matakuliah,
+                        "kelas": absen.kelas,
+                        "dosen": absen.dosen,
+                        "jurusan": absen.jurusan,
+                        "semester": absen.semester
+                    }
+            
+            expanded_details.append(detail_dict)
+        
+        data.details = expanded_details
+        items.append(data)
+    
+    return {
+        "status": "success",
+        "message": "History retrieved successfully",
+        "data": {
+            "items": items,
+            "pagination": {
+                "current_page": page,
+                "per_page": per_page,
+                "total": total,
+                "last_page": (total + per_page - 1) // per_page,
+                "from": skip + 1 if items else 0,
+                "to": skip + len(items)
+            }
+        }
+    }
+
+@router.get("/staff/statistics", response_model=dict)
+def get_peminjaman_statistics(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_staff)
+):
+    """Get statistik peminjaman untuk staff dashboard"""
+    today = date.today()
+    week_ago = today - timedelta(days=7)
+    month_ago = today - timedelta(days=30)
+    
+    # Today stats
+    today_total = db.query(Peminjaman).filter(
+        Peminjaman.tanggal_peminjaman == today
+    ).count()
+    
+    today_pending = db.query(Peminjaman).filter(
+        Peminjaman.tanggal_peminjaman == today,
+        Peminjaman.status == StatusPeminjamanEnum.pending
+    ).count()
+    
+    today_approved = db.query(Peminjaman).filter(
+        Peminjaman.tanggal_peminjaman == today,
+        Peminjaman.status == StatusPeminjamanEnum.disetujui
+    ).count()
+    
+    # Weekly stats
+    week_total = db.query(Peminjaman).filter(
+        Peminjaman.tanggal_peminjaman >= week_ago
+    ).count()
+    
+    # Monthly stats
+    month_total = db.query(Peminjaman).filter(
+        Peminjaman.tanggal_peminjaman >= month_ago
+    ).count()
+    
+    # Overall pending
+    all_pending = db.query(Peminjaman).filter(
+        Peminjaman.status == StatusPeminjamanEnum.pending
+    ).count()
+    
+    return {
+        "today": {
+            "total": today_total,
+            "pending": today_pending,
+            "approved": today_approved,
+            "rejected": today_total - today_pending - today_approved
+        },
+        "week": {
+            "total": week_total
+        },
+        "month": {
+            "total": month_total
+        },
+        "overall": {
+            "pending": all_pending
+        }
+    }
 
 @router.get("/", response_model=List[PeminjamanResponse])
 def get_all_peminjaman_staff(
